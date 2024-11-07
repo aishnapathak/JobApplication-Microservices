@@ -1,11 +1,10 @@
 package com.aishna.jobms.job;
 
-
+import com.aishna.jobms.job.dto.JobDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -17,9 +16,7 @@ public class JobController {
     private final JobService jobService;
 
     @GetMapping
-    public ResponseEntity<List<Job>> findAll(){
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject("http://localhost:8083/companies", Company.class);
+    public ResponseEntity<List<JobDTO>> findAll(){
         return ResponseEntity.ok(jobService.findAll());
     }
 
@@ -30,11 +27,11 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> findJobById(@PathVariable Long id){
+    public ResponseEntity<JobDTO> findJobById(@PathVariable Long id){
 
-        Job job= jobService.getJobById(id);
-        if(job!=null)
-            return new ResponseEntity<>(job, HttpStatus.OK);
+        JobDTO jobDTO = jobService.getJobById(id);
+        if(jobDTO !=null)
+            return new ResponseEntity<>(jobDTO, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
